@@ -5,12 +5,12 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckAdmin
+class MemberMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (session('role') !== 'admin') {
-            return redirect('/login')->with('error', 'Akses ditolak, kamu bukan admin!');
+        if (session('role') !== 'member') {
+            return redirect()->route('login')->with('error', 'Akses ditolak! Kamu bukan member.');
         }
 
         return $next($request);

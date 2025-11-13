@@ -10,7 +10,7 @@ class User extends Model
     use HasFactory;
 
     protected $table = 'user';
-    protected $primaryKey = 'id_user';
+    protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
@@ -20,10 +20,4 @@ class User extends Model
         'password',
         'role',
     ];
-
-    // Relasi: 1 user punya banyak toko
-    public function tokos()
-    {
-        return $this->hasMany(Toko::class, 'id_user');
-    }
 }

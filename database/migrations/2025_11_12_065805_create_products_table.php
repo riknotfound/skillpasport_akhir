@@ -11,20 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produk', function (Blueprint $table) {
-            $table->id('id_produk'); // primary key
-            $table->unsignedBigInteger('id_kategori'); // foreign key ke kategori
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
             $table->string('nama_produk', 100);
             $table->integer('harga');
             $table->integer('stok');
             $table->text('deskripsi');
             $table->date('tanggal_upload');
-            $table->unsignedBigInteger('id_toko'); // foreign key ke toko
+            $table->foreignId('id_kategori')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('id_toko')->constrained('stores')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
-
-            // relasi foreign key
-            $table->foreign('id_kategori')->references('id_kategori')->on('kategori')->onDelete('cascade');
-            $table->foreign('id_toko')->references('id_toko')->on('toko')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produk');
+        Schema::dropIfExists('products');
     }
 };

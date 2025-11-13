@@ -13,13 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Hapus semua user lama (opsional)
-        User::truncate();
 
         // Admin
         User::create([
             'username' => 'admin123',
-            'name' => 'Administrator',
+            'nama' => 'Administrator',
+            'kontak' => '0837465738473',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
         ]);
@@ -27,7 +26,8 @@ class DatabaseSeeder extends Seeder
         // Member
         User::create([
             'username' => 'member123',
-            'name' => 'Member Biasa',
+            'nama' => 'Member Biasa',
+            'kontak' => '0837465738474',
             'password' => Hash::make('member123'),
             'role' => 'member',
         ]);

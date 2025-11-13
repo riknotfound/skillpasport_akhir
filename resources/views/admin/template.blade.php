@@ -7,79 +7,97 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
+            background-color: #f4f4f4;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin: 0;
             min-height: 100vh;
-            overflow-x: hidden;
         }
+
         .sidebar {
-            width: 250px;
-            background: #212529;
-            color: white;
             position: fixed;
             top: 0;
-            bottom: 0;
             left: 0;
+            width: 220px;
+            height: 100%;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
             padding-top: 60px;
-            transition: all 0.3s;
         }
+
         .sidebar a {
-            color: #adb5bd;
-            text-decoration: none;
             display: block;
             padding: 10px 20px;
+            color: #555;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
         }
+
         .sidebar a:hover {
-            background-color: #343a40;
+            background-color: #e9ecef;
+            color: #000;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 220px;
+            right: 0;
+            height: 60px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 80px 25px 25px;
+        }
+
+        .logout-btn {
+            background: none;
+            border: 1px solid #dc3545;
+            color: #dc3545;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc3545;
             color: white;
         }
-        .content {
-            margin-left: 250px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        .sidebar.collapsed {
-            width: 70px;
-        }
-        .sidebar.collapsed a span {
-            display: none;
+
+        .header h5 {
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">☰</button>
-            <a class="navbar-brand" href="#">Admin Panel</a>
-        </div>
-    </nav>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <a href="{{ route('admin.dashboard') }}"><span></span> <span>Dashboard</span></a>
-        <a href="#"><span></span> <span>Produk</span></a>
-        <a href="#"><span></span> <span>Kategori</span></a>
-        <a href="#"><span></span> <span>Pengguna</span></a>
-        <a href="#"><span></span> <span>Pengaturan</span></a>
+    <div class="sidebar">
+        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
+        <a href="#">Produk</a>
+        <a href="#">Kategori</a>
+        <a href="{{ route('admin.pengguna.index') }}">Pengguna</a>
+        <a href="#">Toko</a>
     </div>
 
-    <!-- Content -->
-    <div class="content" id="content">
+    <div class="header">
+        <h5 class="m-0">Admin Panel</h5>
+        <form action="{{ route('logout') }}" method="POST" class="m-0">
+            @csrf
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+
+    <div class="content">
         @yield('content')
     </div>
 
-    <script>
-        const toggleBtn = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            if (sidebar.classList.contains('collapsed')) {
-                content.style.marginLeft = "70px";
-            } else {
-                content.style.marginLeft = "250px";
-            }
-        });
-    </script>
 </body>
 </html>

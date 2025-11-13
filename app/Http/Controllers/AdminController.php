@@ -3,22 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Store;
+use App\Models\User;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Pastikan user punya role admin
+
         if (session('role') !== 'admin') {
             return redirect()->route('login')->with('error', 'Akses ditolak! Kamu bukan admin.');
         }
 
-        // Kirim data ke view kalau perlu
-        $data = [
-            'title' => 'Dashboard Admin',
-            'username' => 'Admin Utama',
-        ];
 
-        return view('admin.dashboard', $data);
+        $totalProduk   = Product::count();
+        $totalToko     = Store::count();
+        $totalKategori = Category::count();
+        $totalPengguna = User::count();
+
+        return view('admin.dashboard', [
+            'title'         => 'Dashboard Admin',
+            'username'      => session('username') ?? 'Admin Utama',
+            'totalProduk'   => $totalProduk,
+            'totalToko'     => $totalToko,
+            'totalKategori' => $totalKategori,
+            'totalPengguna' => $totalPengguna,
+        ]);
     }
 }
