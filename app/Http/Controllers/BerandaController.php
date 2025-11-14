@@ -2,20 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BerandaController extends Controller
 {
+    // =============================
+    // HALAMAN BERANDA (PUBLIC)
+    // =============================
     public function index()
     {
-        // Contoh data produk
-        $produk = [
-            ['nama' => 'Seragam Sekolah', 'harga' => 120000],
-            ['nama' => 'Tas Sekolah', 'harga' => 90000],
-            ['nama' => 'Sepatu Putih', 'harga' => 150000],
-        ];
+        // Ambil semua produk + relasi
+        $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
-        // Kirim ke view
-        return view('beranda', compact('produk'));
+        // Ambil semua kategori
+        $kategori = Category::orderBy('nama_kategori')->get();
+
+        return view('beranda', [
+            'produk'   => $produk,
+            'kategori' => $kategori,
+        ]);
+    }
+
+    // =============================
+    // HALAMAN MEMBER
+    // =============================
+    public function memberDashboard()
+    {
+        // Produk terbaru
+        $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        // Semua kategori
+        $kategori = Category::orderBy('nama_kategori')->get();
+
+        return view('member.beranda', [
+            'produk'   => $produk,
+            'kategori' => $kategori,
+        ]);
     }
 }

@@ -22,9 +22,6 @@
                     <li class="nav-item"><a class="nav-link" href="#">Produk</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
-                    <li class="nav-item">
-                     <a class="btn btn-primary ms-3" href="{{ route('login') }}">Login</a>
-                    </li>
                 </ul>
             </div>
         </div>

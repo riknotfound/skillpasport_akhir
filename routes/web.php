@@ -31,7 +31,5 @@ Route::middleware(['admin'])->group(function () {
 
 // ================= MEMBER AREA ================= //
 Route::middleware(['member'])->group(function () {
-    Route::get('/member', function () {
-        return view('member.beranda');
-    })->name('member.dashboard');
+    Route::get('/member', [BerandaController::class, 'memberDashboard'])->name('member.dashboard');
 });
