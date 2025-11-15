@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin123',
             'nama' => 'Administrator',
             'kontak' => '0837465738473',
-            'password' => Hash::make('admin123'),
+            'password' => bcrypt('admin123'),
             'role' => 'admin',
         ]);
 

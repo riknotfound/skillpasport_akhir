@@ -10,7 +10,6 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        dd(Auth::user()->role);
         if (Auth::user()->role == "admin") {
             return $next($request);
         }

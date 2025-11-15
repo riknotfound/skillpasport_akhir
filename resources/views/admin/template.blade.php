@@ -80,10 +80,8 @@
 <body>
 
     <div class="sidebar">
-        <a href="{{ route('admin.dashboard') }}">Dashboard</a>
-        <a href="#">Produk</a>
-        <a href="#">Kategori</a>
-        <a href="{{ route('admin.pengguna.index') }}">Pengguna</a>
+        <a href="{{ route('dashboard.admin') }}">Dashboard</a>
+        <a href="{{ route('admin.pengguna.index')}}">Pengguna</a>
         <a href="#">Toko</a>
     </div>
 

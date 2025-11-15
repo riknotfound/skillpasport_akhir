@@ -16,7 +16,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ================= ADMIN AREA ================= //
 Route::middleware(['admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'dashboard'])->name('dashboard.admin');
 
     // CRUD Pengguna (hanya admin)
     Route::prefix('admin/pengguna')->name('admin.pengguna.')->group(function () {

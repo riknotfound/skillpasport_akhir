@@ -34,7 +34,7 @@ class AuthController extends Controller
 
             // Arahkan sesuai role
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang Admin!');
+                return redirect()->route('dashboard.admin')->with('success', 'Selamat datang Admin!');
             }
 
             return redirect()->route('member.dashboard')->with('success', 'Selamat datang Member!');

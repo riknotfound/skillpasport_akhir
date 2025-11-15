@@ -56,7 +56,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary mb-2">Simpan</button>
-        <a href="{{ route('admin.pengguna') }}" class="btn btn-dark ms-2">Kembali</a>
+        <a href="{{ route('admin.pengguna.index') }}" class="btn btn-dark ms-2">Kembali</a>
     </form>
 </div>
 @endsection
