@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController; // ← Tambahkan ini
+use App\Http\Controllers\ProdukController;
 
 // Halaman utama (public)
 Route::get('/', [BerandaController::class, 'index'])->name('home');
@@ -18,7 +21,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('dashboard.admin');
 
-    // CRUD Pengguna (hanya admin)
     Route::prefix('admin/pengguna')->name('admin.pengguna.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -30,6 +32,15 @@ Route::middleware(['admin'])->group(function () {
 });
 
 // ================= MEMBER AREA ================= //
-Route::middleware(['member'])->group(function () {
-    Route::get('/member', [BerandaController::class, 'memberDashboard'])->name('member.dashboard');
+Route::middleware(['member'])->prefix('member')->name('member.')->group(function () {
+
+    Route::get('/', [MemberController::class, 'memberDashboard'])->name('dashboard');
+
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+
 });

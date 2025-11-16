@@ -26,23 +26,4 @@ class BerandaController extends Controller
             'kategori' => $kategori,
         ]);
     }
-
-    // =============================
-    // HALAMAN MEMBER
-    // =============================
-    public function memberDashboard()
-    {
-        // Produk terbaru
-        $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        // Semua kategori
-        $kategori = Category::orderBy('nama_kategori')->get();
-
-        return view('member.beranda', [
-            'produk'   => $produk,
-            'kategori' => $kategori,
-        ]);
-    }
 }

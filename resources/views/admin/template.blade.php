@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <meta charset="UTF-8" />
+    <title>@yield('title', 'Dashboard')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #f4f4f4;
@@ -34,7 +35,8 @@
             font-weight: 500;
         }
 
-        .sidebar a:hover {
+        .sidebar a:hover,
+        .sidebar a.active {
             background-color: #e9ecef;
             color: #000;
         }
@@ -71,31 +73,51 @@
             background-color: #dc3545;
             color: white;
         }
-
-        .header h5 {
-            color: #333;
-        }
     </style>
 </head>
 <body>
 
+    {{-- Sidebar --}}
     <div class="sidebar">
-        <a href="{{ route('dashboard.admin') }}">Dashboard</a>
-        <a href="{{ route('admin.pengguna.index')}}">Pengguna</a>
-        <a href="#">Toko</a>
+        {{-- Dashboard --}}
+        <a href="{{ Auth::user()->role === 'admin' ? url('/admin') : url('/member') }}"
+           class="@yield('menu-dashboard')">Dashboard</a>
+
+        {{-- Menu ADMIN --}}
+        @if (Auth::user()->role === 'admin')
+            <a href="{{ url('/admin/toko') }}" class="@yield('menu-toko')">Toko</a>
+            <a href="{{ url('/admin/pengguna') }}" class="@yield('menu-pengguna')">Pengguna</a>
+
+        {{-- Menu MEMBER --}}
+        @elseif (Auth::user()->role === 'member')
+            <a href="{{ url('/member/produk') }}" class="@yield('menu-produk')">Produk</a>
+            <a href="{{ url('/member/kategori') }}" class="@yield('menu-kategori')">Kategori</a>
+        @endif
     </div>
 
+    {{-- Header --}}
     <div class="header">
-        <h5 class="m-0">Admin Panel</h5>
+        <h5 class="m-0">{{ Auth::user()->role === 'admin' ? 'Admin Panel' : 'Member Panel' }}</h5>
+
         <form action="{{ route('logout') }}" method="POST" class="m-0">
             @csrf
             <button type="submit" class="logout-btn">Logout</button>
         </form>
     </div>
 
+    {{-- Main Content --}}
     <div class="content">
         @yield('content')
     </div>
+
+    <footer class="text-center py-3">
+        @hasSection('footer-info')
+            <div class="mb-2">
+                @yield('footer-info')
+            </div>
+        @endif
+        <small>&copy; {{ date('Y') }} {{ Auth::user()->role === 'admin' ? 'Admin' : 'Member' }} E-Coomers School</small>
+    </footer>
 
 </body>
 </html>

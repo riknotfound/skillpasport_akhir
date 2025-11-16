@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Produk; // pastikan model ini ada
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    public function dashboard()
+    public function memberDashboard()
     {
-        $product = Product::with('gambarProduk')->latest()->get();
-
-        return view('member.beranda', compact('produk'));
+        $totalProduk = Product::count();
+        $totalKategori = Category::count();
+        return view('admin.dashboard', compact('totalProduk','totalKategori'));
     }
 }

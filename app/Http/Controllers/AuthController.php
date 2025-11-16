@@ -7,40 +7,35 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // Form login
+    // Form Login
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Proses login (FIXED)
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string',
+        $credentials = $request->validate([
+            'username'    => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Login menggunakan Laravel Auth
-        $credentials = [
-            'username' => $request->username,
-            'password' => $request->password,
-        ];
-
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
             $user = Auth::user();
 
-            // Arahkan sesuai role
             if ($user->role === 'admin') {
-                return redirect()->route('dashboard.admin')->with('success', 'Selamat datang Admin!');
+                return redirect()->route('dashboard.admin');
+            } elseif ($user->role === 'member') {
+                return redirect()->route('member.dashboard');
+            } else {
+                return redirect()->route('dashboard.admin');
             }
-
-            return redirect()->route('member.dashboard')->with('success', 'Selamat datang Member!');
         }
 
-        return back()->with('error', 'Username atau password salah.');
+        return back()->withErrors([
+            'username' => 'Username atau password salah.',
+        ])->onlyInput('username');
     }
 
     // Logout
@@ -50,6 +45,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Kamu berhasil logout.');
+        return redirect()->route('login');
     }
 }

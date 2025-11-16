@@ -8,20 +8,17 @@ class Product extends Model
 {
     protected $guarded = [];
 
-    // Relasi: produk milik satu kategori
-    public function kategori()
+    public function category()
     {
         return $this->belongsTo(Category::class, 'id_kategori');
     }
 
-    // Relasi: produk milik satu toko
-    public function toko()
+    public function store()
     {
         return $this->belongsTo(Store::class, 'id_toko');
     }
 
-    // Relasi: produk punya banyak gambar
-    public function gambarProduk()
+    public function images()
     {
         return $this->hasMany(ProductImage::class, 'id_produk');
     }

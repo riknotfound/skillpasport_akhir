@@ -1,46 +1,72 @@
 @extends('admin.template')
-
+@section('title', 'Dashboard Admin')
+@section('menu-dashboard', 'active')
 @section('content')
-<div class="container-fluid">
-    <h1 class="mb-4">Selamat Datang di Dashboard Admin</h1>
 
-    <div class="row">
-        <div class="col-md-3 mb-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Total Produk</h5>
-                    <p class="display-6 text-primary">{{ $totalProduk }}</p>
-                </div>
-            </div>
-        </div>
+<div class="text-center mb-5">
+    <h3 class="fw-bold">
+        Selamat Datang, {{ Auth::user()->nama }}
+    </h3>
+    <p class="mb-0">
+        Gunakan menu navigasi di atas untuk mengelola data sesuai hak akses Anda.
+    </p>
+</div>
 
-        <div class="col-md-3 mb-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Total Toko</h5>
-                    <p class="display-6 text-success">{{ $totalToko }}</p>
-                </div>
-            </div>
-        </div>
+{{-- Gunakan flexbox agar kartu center --}}
+<div class="d-flex flex-wrap justify-content-center gap-4">
 
-        <div class="col-md-3 mb-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Total Kategori</h5>
-                    <p class="display-6 text-success">{{ $totalKategori }}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-2">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="card-title">Total Pengguna</h5>
-                    <p class="display-6 text-warning">{{ $totalPengguna }}</p>
-                </div>
-            </div>
+    {{-- CARD TOKO - hanya admin --}}
+    @if (Auth::user()->role === 'admin')
+    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+        <div class="card-body">
+            <h5 class="card-title">Total Toko</h5>
+            <h2 class="fw-bold">{{ $totalToko ?? 0 }}</h2>
+            <a href="{{ url('/admin/toko') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
         </div>
     </div>
 
+    {{-- CARD PENGGUNA - hanya admin --}}
+    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+        <div class="card-body">
+            <h5 class="card-title">Total Pengguna</h5>
+            <h2 class="fw-bold">{{ $totalPengguna ?? 0 }}</h2>
+            <a href="{{ url('/admin/pengguna') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        </div>
+    </div>
+    @endif
+
+    {{-- CARD PRODUK - hanya member --}}
+    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+        <div class="card-body">
+            <h5 class="card-title">Total Produk</h5>
+            <h2 class="fw-bold">{{ $totalProduk ?? 0 }}</h2>
+            <a href="{{ url('/member/produk') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        </div>
+    </div>
+
+    {{-- CARD KATEGORI - hanya member --}}
+    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+        <div class="card-body">
+            <h5 class="card-title">Total Kategori</h5>
+            <h2 class="fw-bold">{{ $totalKategori ?? 0 }}</h2>
+            <a href="{{ url('/member/kategori') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        </div>
+    </div>
+
+    {{-- CARD EKSKUL --}}
+    {{-- <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+        <div class="card-body">
+            <h5 class="card-title">Total Ekskul</h5>
+            <h2 class="fw-bold">{{ $totalEkskul ?? 0 }}</h2>
+            <a href="{{ Auth::user()->level === 'admin' ? url('/admin/ekstrakurikuler') : url('/operator/ekstrakurikuler') }}"
+               class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        </div>
+    </div> --}}
+
 </div>
+
+@endsection
+
+@section('footer-info')
+    <strong>Dashboard SMPN 1 Harapan Rakyat</strong>
 @endsection
