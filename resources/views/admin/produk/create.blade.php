@@ -4,7 +4,17 @@
 <div class="container mt-4">
     <h2>Tambah Produk</h2>
 
-    <form action="{{ route('member.produk.store') }}" method="POST">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('member.produk.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -23,6 +33,11 @@
         </div>
 
         <div class="mb-3">
+            <label>Deskripsi</label>
+            <input type="text" name="deskripsi" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
             <label>Kategori</label>
             <select name="id_kategori" class="form-control" required>
                 @foreach($categories as $kategori)
@@ -31,13 +46,19 @@
             </select>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label>Toko</label>
             <select name="id_toko" class="form-control" required>
                 @foreach($stores as $store)
                     <option value="{{ $store->id }}">{{ $store->nama_toko }}</option>
                 @endforeach
             </select>
+        </div> -->
+
+        <div class="mb-3">
+            <label>Gambar Produk (boleh lebih dari satu)</label>
+            <input type="file" name="gambar_produk[]" class="form-control" accept="image/*" multiple>
+            <small class="form-text text-muted">Bisa upload beberapa gambar sekaligus.</small>
         </div>
 
         <button type="submit" class="btn btn-success">Simpan</button>

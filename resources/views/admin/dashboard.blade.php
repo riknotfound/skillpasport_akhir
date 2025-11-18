@@ -17,51 +17,46 @@
 
     {{-- CARD TOKO - hanya admin --}}
     @if (Auth::user()->role === 'admin')
-    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
-        <div class="card-body">
-            <h5 class="card-title">Total Toko</h5>
-            <h2 class="fw-bold">{{ $totalToko ?? 0 }}</h2>
-            <a href="{{ url('/admin/toko') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+            <div class="card-body">
+                <h5 class="card-title">Total Toko</h5>
+                <h2 class="fw-bold">{{ $totalToko ?? 0 }}</h2>
+                <a href="{{ url('/admin/toko') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+            </div>
         </div>
-    </div>
 
-    {{-- CARD PENGGUNA - hanya admin --}}
-    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
-        <div class="card-body">
-            <h5 class="card-title">Total Pengguna</h5>
-            <h2 class="fw-bold">{{ $totalPengguna ?? 0 }}</h2>
-            <a href="{{ url('/admin/pengguna') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        {{-- CARD PENGGUNA - hanya admin --}}
+        <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+            <div class="card-body">
+                <h5 class="card-title">Total Pengguna</h5>
+                <h2 class="fw-bold">{{ $totalPengguna ?? 0 }}</h2>
+                <a href="{{ url('/admin/pengguna') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+            </div>
         </div>
-    </div>
     @endif
 
-    {{-- CARD PRODUK - hanya member --}}
-    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
-        <div class="card-body">
-            <h5 class="card-title">Total Produk</h5>
-            <h2 class="fw-bold">{{ $totalProduk ?? 0 }}</h2>
-            <a href="{{ url('/member/produk') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
-        </div>
-    </div>
+    {{-- CARD PRODUK & KATEGORI hanya ditampilkan jika role = member --}}
+    @if (Auth::user()->role === 'member')
 
-    {{-- CARD KATEGORI - hanya member --}}
-    <div class="card shadow-sm border-0 text-center" style="width: 230px;">
-        <div class="card-body">
-            <h5 class="card-title">Total Kategori</h5>
-            <h2 class="fw-bold">{{ $totalKategori ?? 0 }}</h2>
-            <a href="{{ url('/member/kategori') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        {{-- CARD PRODUK --}}
+        <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+            <div class="card-body">
+                <h5 class="card-title">Total Produk</h5>
+                <h2 class="fw-bold">{{ $totalProduk ?? 0 }}</h2>
+                <a href="{{ url('/member/produk') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+            </div>
         </div>
-    </div>
 
-    {{-- CARD EKSKUL --}}
-    {{-- <div class="card shadow-sm border-0 text-center" style="width: 230px;">
-        <div class="card-body">
-            <h5 class="card-title">Total Ekskul</h5>
-            <h2 class="fw-bold">{{ $totalEkskul ?? 0 }}</h2>
-            <a href="{{ Auth::user()->level === 'admin' ? url('/admin/ekstrakurikuler') : url('/operator/ekstrakurikuler') }}"
-               class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+        {{-- CARD KATEGORI --}}
+        <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+            <div class="card-body">
+                <h5 class="card-title">Total Kategori</h5>
+                <h2 class="fw-bold">{{ $totalKategori ?? 0 }}</h2>
+                <a href="{{ url('/member/kategori') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+            </div>
         </div>
-    </div> --}}
+
+    @endif
 
 </div>
 

@@ -6,8 +6,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController; // ← Tambahkan ini
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TokoController;
 
 // Halaman utama (public)
 Route::get('/', [BerandaController::class, 'index'])->name('home');
@@ -28,6 +29,15 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
         Route::put('/{id}', [UserController::class, 'update'])->name('update');
         Route::delete('/{id_user}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('admin/toko')->name('admin.toko.')->group(function () {
+        Route::get('/', [TokoController::class, 'index'])->name('index');
+        Route::get('create', [TokoController::class, 'create'])->name('create');
+        Route::post('/', [TokoController::class, 'store'])->name('store');
+        Route::get('{toko}/edit', [TokoController::class, 'edit'])->name('edit');
+        Route::put('{toko}', [TokoController::class, 'update'])->name('update');
+        Route::delete('{toko}', [TokoController::class, 'destroy'])->name('destroy');
     });
 });
 

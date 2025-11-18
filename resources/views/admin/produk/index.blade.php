@@ -30,7 +30,7 @@
                     <td>{{ $product->nama_produk }}</td>
                     <td>Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
                     <td>{{ $product->stok }}</td>
-                    <td>{{ $product->category->nama ?? '-' }}</td>
+                    <td>{{ $product->category->nama_kategori ?? '-' }}</td>
                     <td>{{ $product->store->nama_toko ?? '-' }}</td>
                     <td>{{ $product->tanggal_upload }}</td>
                     <td>

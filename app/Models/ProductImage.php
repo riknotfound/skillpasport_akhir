@@ -13,4 +13,10 @@ class ProductImage extends Model
     {
         return $this->belongsTo(Product::class, 'id_produk');
     }
+
+    // Helper: return url akses publik (storage link)
+    public function url()
+    {
+        return asset('storage/product_images/' . $this->nama_gambar);
+    }
 }

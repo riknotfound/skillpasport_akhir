@@ -7,8 +7,6 @@
 {{-- HERO / DARK OVERLAY --}}
 <div class="hero-section position-relative d-flex align-items-center text-center text-white"
     style="background: url('{{ asset('assets/background.jpg') }}') center/cover no-repeat; height: 60vh;">
-
-    {{-- overlay gelap --}}
     <div style="position:absolute; inset:0; background:rgba(0,0,0,0.55);"></div>
 
     <div class="container position-relative">
@@ -28,15 +26,14 @@
                 <div class="card shadow-sm h-100 border-0" style="border-radius:14px; overflow:hidden;">
 
                     {{-- Gambar --}}
-                    @if($item->gambarProduk->count() > 0)
-                        <img src="{{ asset('storage/' . $item->gambarProduk->first()->path) }}"
-                             class="card-img-top"
-                             style="height:230px; object-fit:cover;">
-                    @else
-                        <img src="https://via.placeholder.com/400x250"
-                             class="card-img-top"
-                             style="height:230px; object-fit:cover;">
-                    @endif
+                    @php
+                        $firstImage = $item->gambarProduk->first();
+                        $imgUrl = $firstImage ? asset('storage/product_images/' . $firstImage->nama_gambar) : 'https://via.placeholder.com/400x250';
+                    @endphp
+
+                    <img src="{{ $imgUrl }}"
+                         class="card-img-top"
+                         style="height:230px; object-fit:cover;">
 
                     <div class="card-body text-center">
                         <h5 class="card-title fw-bold">{{ $item->nama_produk }}</h5>
