@@ -28,7 +28,7 @@
                     {{-- Gambar --}}
                     @php
                         $firstImage = $item->gambarProduk->first();
-                        $imgUrl = $firstImage ? asset('storage/product_images/' . $firstImage->nama_gambar) : 'https://via.placeholder.com/400x250';
+                        $imgUrl = $firstImage ? asset('image-product/' . $firstImage->nama_gambar) : 'https://via.placeholder.com/400x250';
                     @endphp
 
                     <img src="{{ $imgUrl }}"

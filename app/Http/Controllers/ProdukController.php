@@ -12,15 +12,42 @@ use Illuminate\Support\Facades\Auth;
 
 class ProdukController extends Controller
 {
-    // Tampilkan semua produk
+    // ==========================
+    // 1. PRODUK PUBLIC (GUEST)
+    // ==========================
+    public function produk()
+    {
+        // Ambil semua produk + relasi
+        $products = Product::with(['kategori', 'toko', 'gambarProduk'])
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('produk', [
+            'products' => $products
+        ]);
+    }
+
+    // Detail produk public
+    public function detail($id)
+    {
+        $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
+            ->findOrFail($id);
+
+        return view('detail_produk', [
+            'produk' => $produk
+        ]);
+    }
+
+    // ==========================
+    // 2. PRODUK MEMBER (CRUD)
+    // ==========================
+
     public function index()
     {
-        // eager load relasi yang dipakai di view
         $products = Product::with(['kategori', 'gambarProduk'])->get();
         return view('admin.produk.index', ['products' => $products]);
     }
 
-    // Tampilan tambah produk
     public function create()
     {
         $categories = Category::all();
@@ -28,41 +55,33 @@ class ProdukController extends Controller
         return view('admin.produk.create', compact('categories', 'stores'));
     }
 
-    // Simpan data produk baru
     public function store(Request $request)
     {
-       $validasi =  $request->validate([
+        $validasi = $request->validate([
             'nama_produk'     => 'required|max:100',
             'harga'           => 'required|numeric',
             'stok'            => 'required|integer',
             'deskripsi'       => 'required',
             'id_kategori'     => 'required',
-            'gambar_produk.*' => 'nullable|image|max:5120' // 5MB per file
+            'gambar_produk.*' => 'nullable|image|max:5120'
         ]);
 
         $toko = Store::where('id_user', Auth::id())->first();
 
         $validasi['id_toko'] = $toko ? $toko->id : null;
-
         $validasi['tanggal_upload'] = now()->format('Y-m-d');
 
-        // Simpan product tanpa file input
         $data = $validasi;
         unset($data['gambar_produk']);
         $product = Product::create($data);
 
-        // Jika ada file gambar, simpan ke storage/public/product_images dan record ke product_images
         if ($request->hasFile('gambar_produk')) {
             foreach ($request->file('gambar_produk') as $file) {
                 if (!$file->isValid()) continue;
 
-                // buat nama file unik
                 $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('image-product'), $filename);
 
-                // simpan ke storage (public disk). Akan berada di storage/app/public/product_images/<filename>
-                $file->storeAs('public/product_images', $filename);
-
-                // simpan record ke tabel product_images
                 ProductImage::create([
                     'id_produk'   => $product->id,
                     'nama_gambar' => $filename
@@ -73,17 +92,19 @@ class ProdukController extends Controller
         return redirect()->route('member.produk.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    // Halaman edit produk
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
         $stores = Store::all();
 
-        return view('admin.produk.edit', compact('product', 'categories', 'stores'));
+        return view('admin.produk.edit', [
+            'produk' => $product,
+            'categories' => $categories,
+            'stores' => $stores
+        ]);
     }
 
-    // Update data
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -93,22 +114,19 @@ class ProdukController extends Controller
             'deskripsi'       => 'required',
             'tanggal_upload'  => 'required|date',
             'id_kategori'     => 'required',
-            'id_toko'         => 'required',
             'gambar_produk.*' => 'nullable|image|max:5120'
         ]);
 
         $product = Product::findOrFail($id);
 
-        // update fields kecuali file
         $product->update($request->except('gambar_produk'));
 
-        // handle new uploaded images (jika ada)
         if ($request->hasFile('gambar_produk')) {
             foreach ($request->file('gambar_produk') as $file) {
                 if (!$file->isValid()) continue;
 
                 $filename = time() . '_' . Str::random(8) . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/product_images', $filename);
+                $file->storeAs('public/image-product', $filename);
 
                 ProductImage::create([
                     'id_produk'   => $product->id,
@@ -120,11 +138,9 @@ class ProdukController extends Controller
         return redirect()->route('member.produk.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
-    // Hapus produk
     public function destroy($id)
     {
         Product::findOrFail($id)->delete();
-
         return redirect()->route('member.produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 }

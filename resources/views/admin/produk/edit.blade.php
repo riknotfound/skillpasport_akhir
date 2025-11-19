@@ -4,6 +4,16 @@
 <div class="container">
     <h2>Edit Produk</h2>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('member.produk.update', $produk->id) }}" method="POST">
         @csrf
         @method('PUT')
@@ -44,7 +54,7 @@
             </select>
         </div>
 
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="id_toko" class="form-label">Toko</label>
             <select name="id_toko" id="id_toko" class="form-select">
                 @foreach($stores as $toko)
@@ -53,7 +63,7 @@
                     </option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('member.produk.index') }}" class="btn btn-secondary">Batal</a>

@@ -19,9 +19,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('produk') ? 'active' : '' }}" href="{{ route('produk.all') }}">Produk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Toko</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Tentang</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
                     <li class="nav-item">
                      <a class="btn btn-primary ms-3" href="{{ route('login') }}">Login</a>
                     </li>

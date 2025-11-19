@@ -12,6 +12,8 @@ use App\Http\Controllers\TokoController;
 
 // Halaman utama (public)
 Route::get('/', [BerandaController::class, 'index'])->name('home');
+Route::get('/produk', [ProdukController::class, 'produk'])->name('produk.all');
+Route::get('/produk/{id}', [ProdukController::class, 'detail'])->name('produk.detail');
 
 // Autentikasi
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
