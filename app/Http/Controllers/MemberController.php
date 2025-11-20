@@ -14,4 +14,10 @@ class MemberController extends Controller
         $totalKategori = Category::count();
         return view('admin.dashboard', compact('totalProduk','totalKategori'));
     }
+
+    public function kategoriMember()
+    {
+        $categories = Category::all();
+        return view('admin.kategori.index', compact('categories'));
+    }
 }

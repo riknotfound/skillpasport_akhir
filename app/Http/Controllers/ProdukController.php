@@ -14,14 +14,25 @@ class ProdukController extends Controller
 {
     // Produk public
 
-    public function produk()
+    public function produk(Request $request)
     {
-        $products = Product::with(['kategori', 'toko', 'gambarProduk'])
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $q = $request->query('search');
+
+        $query = Product::with(['kategori', 'toko', 'gambarProduk'])
+            ->orderBy('created_at', 'DESC');
+
+        if ($q) {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nama_produk', 'like', "%{$q}%")
+                    ->orWhere('deskripsi', 'like', "%{$q}%");
+            });
+        }
+
+        $products = $query->get();
 
         return view('produk', [
-            'products' => $products
+            'products' => $products,
+            'search' => $q
         ]);
     }
 

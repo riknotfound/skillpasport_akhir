@@ -12,7 +12,7 @@
     <div class="container position-relative">
         <h1 class="fw-bold mb-3">Selamat Datang di E-Commerce Sekolah</h1>
         <p class="lead">Belanja berbagai produk karya siswa dan kebutuhan sekolah dengan mudah dan cepat!</p>
-        <a href="#" class="btn btn-primary btn-lg mt-3">Lihat Produk</a>
+        <a href="/produk" class="btn btn-primary btn-lg mt-3">Lihat Produk</a>
     </div>
 </div>
 
@@ -45,7 +45,7 @@
                             Kategori: {{ $item->kategori->nama_kategori ?? '-' }}
                         </p>
 
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-pill px-4">Detail</a>
+                        <a href="/produk" class="btn btn-outline-primary btn-sm rounded-pill px-4">Detail</a>
                     </div>
                 </div>
             </div>

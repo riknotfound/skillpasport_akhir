@@ -20,12 +20,27 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto me-3">
                     <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->is('produk') ? 'active' : '' }}" href="{{ route('produk.all') }}">Produk</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->is('toko') ? 'active' : '' }}" href="{{ route('toko.public') }}">Toko</a></li>
+                </ul>
+
+                <!-- SEARCH FORM (menggunakan GET ke route produk) -->
+                <form class="d-flex" role="search" method="GET" action="{{ route('produk.all') }}">
+                    <input
+                        class="form-control me-2"
+                        type="search"
+                        name="search"
+                        value="{{ request('search') }}"
+                        placeholder="Cari produk..."
+                        aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit"><i class="bi bi-search"></i></button>
+                </form>
+
+                <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <a class="btn btn-primary ms-3" href="{{ route('login') }}">Login</a>
+                        <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
                     </li>
                 </ul>
             </div>

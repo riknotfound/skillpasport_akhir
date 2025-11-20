@@ -6,7 +6,13 @@
 
 <div class="container my-4">
 
-    <h2 class="fw-bold mb-4 text-center">Semua Produk</h2>
+    {{-- Judul / Info pencarian --}}
+    @if(request('search'))
+        <h2 class="fw-bold mb-1 text-center">Hasil pencarian untuk: "<span class="text-primary">{{ request('search') }}</span>"</h2>
+        <p class="text-center text-muted mb-4">{{ $products->count() }} produk ditemukan.</p>
+    @else
+        <h2 class="fw-bold mb-4 text-center">Semua Produk</h2>
+    @endif
 
     <div class="row g-4">
 
@@ -16,7 +22,6 @@
 
                     {{-- Gambar Produk --}}
                     @if ($item->gambarProduk->count() > 0)
-                    
                         <img src="{{ asset('image-product/' . $item->gambarProduk->first()->nama_gambar) }}"
                              class="card-img-top"
                              style="height: 200px; object-fit: cover;">
@@ -52,7 +57,17 @@
                 </div>
             </div>
         @empty
-            <p class="text-center mt-4">Belum ada produk tersedia.</p>
+            @if(request('search'))
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        Produk tidak ditemukan untuk: "<strong>{{ request('search') }}</strong>"
+                    </div>
+                </div>
+            @else
+                <div class="col-12">
+                    <p class="text-center mt-4">Belum ada produk tersedia.</p>
+                </div>
+            @endif
         @endforelse
 
     </div>

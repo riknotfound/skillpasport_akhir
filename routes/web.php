@@ -71,6 +71,9 @@ Route::middleware(['member'])->prefix('member')->name('member.')->group(function
         ]);
     })->name('dashboard');
 
+    // Route untuk menampilkan list kategori (menggunakan blade di resources/views/admin/kategori/index.blade.php)
+    Route::get('/kategori', [MemberController::class, 'kategoriMember'])->name('kategori.index');
+
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
     Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
     Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
