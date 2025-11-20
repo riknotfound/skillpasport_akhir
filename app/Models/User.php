@@ -31,7 +31,7 @@ class User extends Authenticatable
         return 'username';
     }
 
-    // Relasi: satu toko dimiliki oleh satu user
+    // Relasi
     public function store()
     {
         return $this->hasOne(Store::class, 'id_user'); // contoh jika kolom id_user di stores

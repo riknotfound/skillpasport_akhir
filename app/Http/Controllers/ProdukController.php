@@ -12,12 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ProdukController extends Controller
 {
-    // ==========================
-    // 1. PRODUK PUBLIC (GUEST)
-    // ==========================
+    // Produk public
+
     public function produk()
     {
-        // Ambil semua produk + relasi
         $products = Product::with(['kategori', 'toko', 'gambarProduk'])
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -27,7 +25,6 @@ class ProdukController extends Controller
         ]);
     }
 
-    // Detail produk public
     public function detail($id)
     {
         $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
@@ -38,13 +35,16 @@ class ProdukController extends Controller
         ]);
     }
 
-    // ==========================
-    // 2. PRODUK MEMBER (CRUD)
-    // ==========================
+    // Produk Member
 
     public function index()
     {
-        $products = Product::with(['kategori', 'gambarProduk'])->get();
+        $toko = Store::where('id_user', Auth::id())->first();
+
+        $products = Product::with(['kategori', 'gambarProduk'])
+            ->where('id_toko', $toko->id)
+            ->get();
+
         return view('admin.produk.index', ['products' => $products]);
     }
 
@@ -94,7 +94,12 @@ class ProdukController extends Controller
 
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $toko = Store::where('id_user', Auth::id())->first();
+
+        $product = Product::where('id', $id)
+            ->where('id_toko', $toko->id)
+            ->firstOrFail();
+
         $categories = Category::all();
         $stores = Store::all();
 
@@ -107,6 +112,12 @@ class ProdukController extends Controller
 
     public function update(Request $request, $id)
     {
+        $toko = Store::where('id_user', Auth::id())->first();
+
+        $product = Product::where('id', $id)
+            ->where('id_toko', $toko->id)
+            ->firstOrFail();
+
         $request->validate([
             'nama_produk'     => 'required|max:100',
             'harga'           => 'required|numeric',
@@ -116,8 +127,6 @@ class ProdukController extends Controller
             'id_kategori'     => 'required',
             'gambar_produk.*' => 'nullable|image|max:5120'
         ]);
-
-        $product = Product::findOrFail($id);
 
         $product->update($request->except('gambar_produk'));
 
@@ -140,7 +149,10 @@ class ProdukController extends Controller
 
     public function destroy($id)
     {
-        Product::findOrFail($id)->delete();
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+
         return redirect()->route('member.produk.index')->with('success', 'Produk berhasil dihapus!');
     }
 }

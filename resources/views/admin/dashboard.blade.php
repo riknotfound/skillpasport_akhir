@@ -12,11 +12,12 @@
     </p>
 </div>
 
-{{-- Gunakan flexbox agar kartu center --}}
 <div class="d-flex flex-wrap justify-content-center gap-4">
 
-    {{-- CARD TOKO - hanya admin --}}
+    {{-- CARD UNTUK ADMIN --}}
     @if (Auth::user()->role === 'admin')
+
+        {{-- CARD TOKO --}}
         <div class="card shadow-sm border-0 text-center" style="width: 230px;">
             <div class="card-body">
                 <h5 class="card-title">Total Toko</h5>
@@ -25,7 +26,7 @@
             </div>
         </div>
 
-        {{-- CARD PENGGUNA - hanya admin --}}
+        {{-- CARD PENGGUNA --}}
         <div class="card shadow-sm border-0 text-center" style="width: 230px;">
             <div class="card-body">
                 <h5 class="card-title">Total Pengguna</h5>
@@ -33,12 +34,22 @@
                 <a href="{{ url('/admin/pengguna') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
             </div>
         </div>
+
+        {{-- CARD PRODUK (SEMUA TOKO) --}}
+        <div class="card shadow-sm border-0 text-center" style="width: 230px;">
+            <div class="card-body">
+                <h5 class="card-title">Total Produk</h5>
+                <h2 class="fw-bold">{{ $totalProdukAll ?? 0 }}</h2>
+                <a href="{{ url('/admin/produk') }}" class="btn btn-primary btn-sm mt-2">Lihat Data</a>
+            </div>
+        </div>
+
     @endif
 
-    {{-- CARD PRODUK & KATEGORI hanya ditampilkan jika role = member --}}
+    {{-- CARD UNTUK MEMBER --}}
     @if (Auth::user()->role === 'member')
 
-        {{-- CARD PRODUK --}}
+        {{-- CARD PRODUK (khusus toko member) --}}
         <div class="card shadow-sm border-0 text-center" style="width: 230px;">
             <div class="card-body">
                 <h5 class="card-title">Total Produk</h5>
@@ -63,5 +74,5 @@
 @endsection
 
 @section('footer-info')
-    <strong>Dashboard SMPN 1 Harapan Rakyat</strong>
+    <strong>Official E-Coomers SMAN 1 Bandung</strong>
 @endsection

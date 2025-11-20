@@ -7,7 +7,7 @@
 <div class="container my-4">
 
     <div class="row">
-        
+
         {{-- Gambar Produk --}}
         <div class="col-md-5">
             @if ($produk->gambarProduk->count() > 0)
@@ -40,7 +40,7 @@
                 {{ $produk->deskripsi }}
             </p>
 
-            <a href="https://wa.me/6287750778257" class="btn btn-success mt-4">Order via WhatsApp</a>
+            <a href="https://wa.me/{{ $produk->toko->kontak_toko }}?text=ApaIniMasihAda?" class="btn btn-success mt-3">Order via WhatsApp</a>
             <a href="{{ route('produk.all') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
 

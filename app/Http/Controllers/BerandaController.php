@@ -8,19 +8,14 @@ use Illuminate\Http\Request;
 
 class BerandaController extends Controller
 {
-    // =============================
-    // HALAMAN BERANDA (PUBLIC)
-    // =============================
+    // Beranda public
     public function index()
     {
-        // Ambil semua produk + relasi
         $produk = Product::with(['kategori', 'toko', 'gambarProduk'])
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        // Ambil semua kategori
         $kategori = Category::orderBy('nama_kategori')->get();
-
         return view('beranda', [
             'produk'   => $produk,
             'kategori' => $kategori,

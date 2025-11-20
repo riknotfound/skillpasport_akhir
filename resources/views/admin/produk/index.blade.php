@@ -4,7 +4,9 @@
 <div class="container">
     <h2 class="mb-4">Daftar Produk</h2>
 
-    <a href="{{ route('member.produk.create') }}" class="btn btn-primary mb-3">+ Tambah Produk</a>
+    @if (Auth::user()->role == 'member')
+        <a href="{{ route('member.produk.create') }}" class="btn btn-primary mb-3">+ Tambah Produk</a>
+    @endif
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -34,12 +36,22 @@
                     <td>{{ $product->store->nama_toko ?? '-' }}</td>
                     <td>{{ $product->tanggal_upload }}</td>
                     <td>
-                        <a href="{{ route('member.produk.edit', $product->id) }}" class="btn btn-warning btn-sm me-1">Edit</a>
-                        <form action="{{ route('member.produk.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                        </form>
+                        @if (Auth::user()->role == "member")
+                            <a href="{{ route('member.produk.edit', $product->id) }}" class="btn btn-warning btn-sm me-1">Edit</a>
+                        @endif
+                        @if (Auth::user()->role == "member")
+                            <form action="{{ route('member.produk.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button  type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                            </form>
+                        @else
+                            <form action="{{ route('admin.produk.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button  type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                            </form>
+                        @endif
                     </td>
                 </tr>
             @empty

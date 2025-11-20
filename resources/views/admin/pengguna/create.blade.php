@@ -4,7 +4,6 @@
 <div class="container">
     <h2 class="mb-4">Tambah Pengguna Baru</h2>
 
-    {{-- Tampilkan pesan error jika ada --}}
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Terjadi kesalahan!</strong>
@@ -16,7 +15,6 @@
         </div>
     @endif
 
-    {{-- Tampilkan pesan sukses jika ada --}}
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

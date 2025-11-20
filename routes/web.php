@@ -9,18 +9,24 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TokoController;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Store;
+use Illuminate\Support\Facades\Auth;
 
 // Halaman utama (public)
 Route::get('/', [BerandaController::class, 'index'])->name('home');
 Route::get('/produk', [ProdukController::class, 'produk'])->name('produk.all');
 Route::get('/produk/{id}', [ProdukController::class, 'detail'])->name('produk.detail');
+Route::get('/toko', [TokoController::class, 'toko'])->name('toko.public');
+Route::get('/toko/{id}', [TokoController::class, 'detail_toko'])->name('toko.detail');
 
 // Autentikasi
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// ================= ADMIN AREA ================= //
+// Admin
 Route::middleware(['admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('dashboard.admin');
 
@@ -41,18 +47,35 @@ Route::middleware(['admin'])->group(function () {
         Route::put('{toko}', [TokoController::class, 'update'])->name('update');
         Route::delete('{toko}', [TokoController::class, 'destroy'])->name('destroy');
     });
+
+    // ====== PRODUK ADMIN: LIHAT & HAPUS SEMUA PRODUK ======
+    Route::prefix('admin/produk')->name('admin.produk.')->group(function () {
+        Route::get('/', [AdminController::class, 'produkIndex'])->name('index');   // list semua produk
+        Route::delete('/{id}', [AdminController::class, 'produkDestroy'])->name('destroy'); // hapus produk
+    });
 });
 
-// ================= MEMBER AREA ================= //
+// Member
 Route::middleware(['member'])->prefix('member')->name('member.')->group(function () {
 
-    Route::get('/', [MemberController::class, 'memberDashboard'])->name('dashboard');
+    Route::get('/', function () {
+
+        $user = Auth::user();
+        $toko = Store::where('id_user', $user->id)->first();
+        $totalProduk = Product::where('id_toko', $toko ? $toko->id : null)->count();
+        $totalKategori = Category::count();
+
+        return view('admin.dashboard', [
+            'totalProduk'   => $totalProduk,
+            'totalKategori' => $totalKategori
+        ]);
+    })->name('dashboard');
 
     Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
     Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
     Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
     Route::get('/produk/{id}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
-    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 });

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // Tampilkan semua pengguna
+    // All Pengguna
     public function index()
     {
         $users = User::all();

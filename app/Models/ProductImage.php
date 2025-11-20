@@ -8,13 +8,13 @@ class ProductImage extends Model
 {
     protected $guarded = [];
 
-    // Relasi: satu gambar milik satu produk
+    // Relasi
     public function produk()
     {
         return $this->belongsTo(Product::class, 'id_produk');
     }
 
-    // Helper: return url akses publik (storage link)
+    // Helper
     public function url()
     {
         return asset('storage/product_images/' . $this->nama_gambar);

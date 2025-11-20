@@ -87,6 +87,7 @@
         @if (Auth::user()->role === 'admin')
             <a href="{{ url('/admin/toko') }}" class="@yield('menu-toko')">Toko</a>
             <a href="{{ url('/admin/pengguna') }}" class="@yield('menu-pengguna')">Pengguna</a>
+            <a href="{{ url('/admin/produk') }}" class="@yield('menu-produk')">Produk</a>
 
         {{-- Menu MEMBER --}}
         @elseif (Auth::user()->role === 'member')
